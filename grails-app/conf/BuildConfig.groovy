@@ -25,6 +25,8 @@ grails.project.dependency.resolution = {
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
+        compile 'commons-vfs:commons-vfs:2.0-SNAPSHOT'
+        compile 'gaevfs:gaevfs:0.3'
 
         // runtime 'mysql:mysql-connector-java:5.1.13'
     }
