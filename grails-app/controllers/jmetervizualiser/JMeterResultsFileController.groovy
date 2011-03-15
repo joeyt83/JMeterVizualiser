@@ -1,12 +1,8 @@
 package jmetervizualiser
 
 import org.apache.commons.vfs.FileObject
-import com.newatlanta.commons.vfs.provider.gae.GaeVFS
-import org.apache.commons.vfs.FileSystemManager
 
-class JMeterResultsFileController {
-
-    FileSystemManager fsManager = GaeVFS.getManager();
+class JMeterResultsFileController extends GAEVfsAwareController {
 
     def index = {
 
@@ -15,7 +11,7 @@ class JMeterResultsFileController {
     def show = {
         List files = []
 
-		FileObject anonymousDirectory = fsManager.resolveFile("gae://users/anonymous/");
+		FileObject anonymousDirectory = getFile("gae://users/anonymous/");
 		anonymousDirectory.children.each { FileObject file ->
 			files.add file.name.baseName
 		}
@@ -24,10 +20,11 @@ class JMeterResultsFileController {
     }
 
     def delete = {
-		FileObject anonymousDirectory = fsManager.resolveFile("gae://users/anonymous/");
+		FileObject anonymousDirectory = getFile("gae://users/anonymous/");
 		anonymousDirectory.children.each { FileObject file ->
 			file.delete()
 		}
+
 		redirect(action: 'show')
 	}
 }

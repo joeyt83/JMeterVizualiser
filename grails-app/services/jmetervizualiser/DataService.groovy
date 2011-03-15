@@ -6,7 +6,7 @@ class DataService {
 
     static transactional = true
 
-    List getAverageResponseTimeOverTime(FileObject file, int timeInterval) {
+    List getAverageResponseTimeOverTime(FileObject file) {
 
 		List data = []
 
