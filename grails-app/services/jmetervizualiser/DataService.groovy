@@ -6,18 +6,21 @@ class DataService {
 
     static transactional = true
 
-    List getAverageResponseTimeOverTime(FileObject file) {
+    Map<Long, Double> getAverageResponseTimeOverTime(FileObject file) {
 
-		List data = []
+		Map<Long, Double> data = [:]
 
 		InputStream inputStream = file.getContent().getInputStream()
-
 		def testResults = new XmlSlurper().parse(inputStream)
 
 		testResults.httpSample.each { def sample ->
-			//get the correct second
-			//update the average response time for that bucket
-			data.add(sample.@ts.text())
+            Long timestampInSecs = Long.parseLong(sample.@ts.text()) / 1000
+            Double responseTime = Double.parseDouble(sample.@t.text()) / 1000
+			if(!data[timestampInSecs]) {
+                data.put timestampInSecs, responseTime
+            } else {
+                data[timestampInSecs] = (data[timestampInSecs] + responseTime) / 2
+            }
 		}
 		return data
     }
