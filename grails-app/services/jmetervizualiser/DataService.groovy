@@ -1,31 +1,54 @@
 package jmetervizualiser
 
 import org.apache.commons.vfs.FileObject
+import groovy.util.slurpersupport.GPathResult
+import java.util.Map.Entry
 
 class DataService {
 
     static transactional = true
 
-    Map<Long, Double> getAverageResponseTimeOverTime(FileObject file) {
-
-		Map<Long, Double> data = [:]
+    List<Long> getAverageResponseTimeOverTime(FileObject file) {
 
 		InputStream inputStream = file.getContent().getInputStream()
 		def testResults = new XmlSlurper().parse(inputStream)
 
-		testResults.httpSample.each { def sample ->
-            Long timestampInSecs = Long.parseLong(sample.@ts.text()) / 1000
-            Double responseTime = Double.parseDouble(sample.@t.text()) / 1000
-			if(!data[timestampInSecs]) {
-                data.put timestampInSecs, responseTime
-            } else {
-                data[timestampInSecs] = (data[timestampInSecs] + responseTime) / 2
+		Map<Long, List<Long>> data = getResponseTimeMap(testResults)
+
+        List<Long> averageResponseTimes = []
+
+        data.each { Entry timestamp ->
+            Long sumOfResponseTimesForTimestamp = 0
+            List responseTimes = timestamp.value as List
+            responseTimes.each { Long responseTime ->
+                sumOfResponseTimesForTimestamp += responseTime
             }
-		}
-		return data
+            long averageResponseTimeForTimestamp = sumOfResponseTimesForTimestamp / responseTimes.size()
+            averageResponseTimes.add(averageResponseTimeForTimestamp)
+        }
+
+        return averageResponseTimes
+
     }
 
-	Long getStartTimeForTest(def testResults) {
+    private def getResponseTimeMap(GPathResult testResults) {
+        Map<Long, List<Long>> data = [:]
+
+        testResults.httpSample.each { def sample ->
+            Long timestampInSecs = Long.parseLong(sample.@ts.text()) / 1000
+            Long responseTime = Double.parseDouble(sample.@t.text())
+            if (!data[timestampInSecs]) {
+                data.put timestampInSecs, [responseTime] as List
+            } else {
+                List existingResponseTimes = data[timestampInSecs]
+                existingResponseTimes.add responseTime
+            }
+        }
+
+        return data
+    }
+
+    Long getStartTimeForTest(def testResults) {
 		Long currentEarliestTimeStamp = testResults.httpSample[0].@ts.text()
 
 		testResults.httpSample.each { def sample ->

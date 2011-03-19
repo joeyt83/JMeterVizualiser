@@ -25,12 +25,12 @@ class DataServiceTests extends GrailsUnitTestCase {
     void testGetAverageResponseTimeOverTime() {
         FileObject file = makeMockFileWithContents(SAMPLE_XML)
 
-        Map<Long, Double> data = [:]
+        List<Long> data = []
         play {
             data = dataService.getAverageResponseTimeOverTime(file)
         }
 
-        assertEquals([284, 267], data)
+        assertEquals([279, 267], data)
     }
 
     private FileObject makeMockFileWithContents(File contents) {

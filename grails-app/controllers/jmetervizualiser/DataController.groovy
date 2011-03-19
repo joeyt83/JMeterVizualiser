@@ -5,13 +5,15 @@ import org.apache.commons.vfs.FileObject
 
 class DataController extends GAEVfsAwareController {
 
+    String resultsFile
+
 	DataService dataService = new DataService()
 
     static defaultAction = "averageResponseTimeOverTime"
 
 	def averageResponseTimeOverTime = {
 
-        FileObject resultsFile = getFile("gae://users/anonymous/${params.filename}")
+        FileObject resultsFile = getFile("gae://users/anonymous/${resultsFile}")
         if(!resultsFile.exists()) {
 			return render(text: "File doesn't exist")
 		}

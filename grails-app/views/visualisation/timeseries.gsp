@@ -190,8 +190,19 @@
 			};
       
 Event.observe(document, 'dom:loaded', function() {
-      
-      chart1 = new Highcharts.Chart(options);
+
+    new Ajax.Request('data/averageResponseTimeOverTime', {
+      method: 'get',
+      onSuccess: function(transport) {
+        var notice = $('notice');
+        if (transport.responseText.match(/href="http:\/\/prototypejs.org/))
+          notice.update('Yeah! You are in the Top 10!').setStyle({ background: '#dfd' });
+        else
+          notice.update('Damn! You are beyond #10...').setStyle({ background: '#fdd' });
+      }
+    });
+
+    chart1 = new Highcharts.Chart(options);
       
    });
  </g:javascript>
@@ -200,6 +211,7 @@ Event.observe(document, 'dom:loaded', function() {
 <body>
 	<h1>Here's a chart</h1>
 	<h2>Of type timeseries</h2>
+    <h3>for file ${filename}</h3>
 	
 	<div id="timeseries-container" style="width: 100%; height: 400px"></div>
 
