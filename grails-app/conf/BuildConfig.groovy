@@ -17,7 +17,7 @@ grails.project.dependency.resolution = {
         // uncomment the below to enable remote dependency resolution
         // from public Maven repositories
         //mavenLocal()
-        //mavenCentral()
+        mavenCentral()
         //mavenRepo "http://snapshots.repository.codehaus.org"
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
@@ -27,6 +27,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         compile 'commons-vfs:commons-vfs:2.0-SNAPSHOT'
         compile 'gaevfs:gaevfs:0.3'
+        compile 'joda-time:joda-time:1.6.2'
         test 'org.gmock:gmock:0.8.1'
 
         // runtime 'mysql:mysql-connector-java:5.1.13'

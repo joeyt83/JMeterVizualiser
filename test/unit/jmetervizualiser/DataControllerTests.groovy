@@ -3,6 +3,7 @@ package jmetervizualiser
 import grails.test.*
 import org.gmock.WithGMock
 import org.apache.commons.vfs.FileObject
+import jmetervizualiser.visualisation.TimeSeriesDataSeries
 
 @WithGMock
 class DataControllerTests extends ControllerUnitTestCase {
@@ -16,7 +17,7 @@ class DataControllerTests extends ControllerUnitTestCase {
 
     void test__AverageResponseTimeOverTime__ForNonExistentFile() {
 
-        mockParams.filename = 'nonsenseFile'
+        controller.resultsFile = 'nonsenseFile'
 
         FileObject nonExistentFile = mock(FileObject)
         nonExistentFile.exists().returns(false)
@@ -32,21 +33,31 @@ class DataControllerTests extends ControllerUnitTestCase {
 
     void test__AverageResponseTimeOverTime__ForFileWhichExists() {
 
-        mockParams.filename = 'nonsenseFile'
+        controller.resultsFile = 'validFile'
 
         FileObject validFile = mock(FileObject)
         validFile.exists().returns(true)
-        mock(controller).getFile('gae://users/anonymous/nonsenseFile').returns(validFile)
+        mock(controller).getFile('gae://users/anonymous/validFile').returns(validFile)
 
         DataService dataService = mock(DataService)
-        dataService.getAverageResponseTimeOverTime(validFile).returns([0.3, 0.1, 0.2])
+        TimeSeriesDataSeries series = mock(TimeSeriesDataSeries)
+        series.getAsJSON().returns(["some": "JSON"])
+        dataService.getAverageResponseTimeOverTime(validFile).returns(series)
         controller.dataService = dataService
 
         play {
             controller.averageResponseTimeOverTime()
         }
 
-        assertEquals '{"data":[0.3,0.1,0.2]}', controller.response.contentAsString
+        assertEquals '{"some":"JSON"}', controller.response.contentAsString
 
+    }
+
+    void test__BeforeInterceptor__AddsResultsFileToController() {
+        controller.request.resultsFile = 'hello'
+
+        controller.beforeInterceptor()
+
+        assertEquals('hello', controller.resultsFile)
     }
 }

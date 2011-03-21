@@ -2,6 +2,7 @@ package jmetervizualiser
 
 import grails.converters.JSON
 import org.apache.commons.vfs.FileObject
+import jmetervizualiser.visualisation.TimeSeriesDataSeries
 
 class DataController extends GAEVfsAwareController {
 
@@ -11,6 +12,10 @@ class DataController extends GAEVfsAwareController {
 
     static defaultAction = "averageResponseTimeOverTime"
 
+    def beforeInterceptor = {
+        resultsFile = request.resultsFile
+    }
+
 	def averageResponseTimeOverTime = {
 
         FileObject resultsFile = getFile("gae://users/anonymous/${resultsFile}")
@@ -18,9 +23,9 @@ class DataController extends GAEVfsAwareController {
 			return render(text: "File doesn't exist")
 		}
 
-		List<Double> responseTimes = dataService.getAverageResponseTimeOverTime(resultsFile)
+		TimeSeriesDataSeries responseTimesSeries = dataService.getAverageResponseTimeOverTime(resultsFile)
 
-		render([data: responseTimes] as JSON)
+		render(responseTimesSeries.getAsJSON() as JSON)
 
 	}
 }

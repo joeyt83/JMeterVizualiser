@@ -4,6 +4,8 @@ import grails.test.*
 import org.apache.commons.vfs.FileObject
 import org.gmock.WithGMock
 import org.apache.commons.vfs.FileContent
+import jmetervizualiser.visualisation.TimeSeriesDataSeries
+import org.joda.time.DateTime
 
 @WithGMock
 class DataServiceTests extends GrailsUnitTestCase {
@@ -25,12 +27,16 @@ class DataServiceTests extends GrailsUnitTestCase {
     void testGetAverageResponseTimeOverTime() {
         FileObject file = makeMockFileWithContents(SAMPLE_XML)
 
-        List<Long> data = []
+        TimeSeriesDataSeries dataSeries = []
         play {
-            data = dataService.getAverageResponseTimeOverTime(file)
+            dataSeries = dataService.getAverageResponseTimeOverTime(file)
         }
 
-        assertEquals([279, 267], data)
+        assertEquals([279, 267], dataSeries.data)
+        assertEquals(1000, dataSeries.pointInterval)
+        DateTime expectedStartTime = new DateTime(2011, 03, 12, 16, 44, 8, 343)  // start date for the test data
+        assertEquals(expectedStartTime, dataSeries.pointStart)
+
     }
 
     private FileObject makeMockFileWithContents(File contents) {

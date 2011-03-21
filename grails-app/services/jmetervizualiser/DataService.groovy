@@ -3,15 +3,17 @@ package jmetervizualiser
 import org.apache.commons.vfs.FileObject
 import groovy.util.slurpersupport.GPathResult
 import java.util.Map.Entry
+import jmetervizualiser.visualisation.TimeSeriesDataSeries
+import org.joda.time.DateTime
 
 class DataService {
 
     static transactional = true
 
-    List<Long> getAverageResponseTimeOverTime(FileObject file) {
+    TimeSeriesDataSeries getAverageResponseTimeOverTime(FileObject file) {
 
 		InputStream inputStream = file.getContent().getInputStream()
-		def testResults = new XmlSlurper().parse(inputStream)
+		GPathResult testResults = new XmlSlurper().parse(inputStream)
 
 		Map<Long, List<Long>> data = getResponseTimeMap(testResults)
 
@@ -27,7 +29,9 @@ class DataService {
             averageResponseTimes.add(averageResponseTimeForTimestamp)
         }
 
-        return averageResponseTimes
+        DateTime startTime = getStartTimeForTest(testResults)
+
+        return new TimeSeriesDataSeries(data: averageResponseTimes, pointInterval: 1000, pointStart: startTime)
 
     }
 
@@ -48,8 +52,8 @@ class DataService {
         return data
     }
 
-    Long getStartTimeForTest(def testResults) {
-		Long currentEarliestTimeStamp = testResults.httpSample[0].@ts.text()
+    DateTime getStartTimeForTest(GPathResult testResults) {
+		Long currentEarliestTimeStamp = Long.parseLong(testResults.httpSample[0].@ts.text())
 
 		testResults.httpSample.each { def sample ->
 			Long timeStamp = Long.parseLong(sample.@ts.text())
@@ -57,11 +61,11 @@ class DataService {
 			currentEarliestTimeStamp = timeStamp
 		}
 
-		return currentEarliestTimeStamp
+		return new DateTime(currentEarliestTimeStamp)
 
 	}
 
-	Long getEndTimeForTest(def testResults) {
+	DateTime getEndTimeForTest(GPathResult testResults) {
 		Long currentLatestTimeStamp = 0
 
 		testResults.httpSample.each { def sample ->
@@ -70,6 +74,6 @@ class DataService {
 			currentLatestTimeStamp = timeStamp
 		}
 
-		return currentLatestTimeStamp
+		return new DateTime(currentLatestTimeStamp)
 	}
 }
