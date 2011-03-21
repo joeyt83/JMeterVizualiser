@@ -14,7 +14,7 @@ class ApplicationFilters {
                 }
 
                 if(resultsFileCookie && resultsFileCookie.value != '') {
-                     request.resultsFile = resultsFileCookie.value
+                    request.resultsFileName = resultsFileCookie.value
                 } else {
                     render(text: "No results file found")
                     return false

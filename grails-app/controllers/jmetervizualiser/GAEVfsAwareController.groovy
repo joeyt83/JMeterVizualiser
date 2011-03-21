@@ -8,7 +8,21 @@ class GAEVfsAwareController {
 
     FileSystemManager fsManager
 
-    public FileObject getFile(String path) {
+    public FileObject getWorkingDirectory() {
+        String protocol = "gae://"
+        String sessionId = session.getId()
+        String path = "${protocol}/sessions/${sessionId}"
+        fsManager = GaeVFS.getManager()
+        FileObject workingDirectory = fsManager.resolveFile(path);
+        if(!workingDirectory.exists()) {
+            workingDirectory.createFolder()
+        }
+        return workingDirectory
+    }
+
+    public FileObject getRootDirectory() {
+        String protocol = "gae://"
+        String path = "${protocol}/"
         fsManager = GaeVFS.getManager()
         return fsManager.resolveFile(path);
     }

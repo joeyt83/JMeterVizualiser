@@ -3,8 +3,15 @@ Define flows and journeys on site
 Extend graphs to give different metrics
  - split by thread group / sample name
  - throughput figures
+ - get labels on timeseries to display correct info
 
 Get lots of different results files to play with
+ - Max filesize
 
 Fix app engine deployment problem
 Add signin for site - user managed files
+ - grails session management
+
+******* Last action *******
+
+***************************

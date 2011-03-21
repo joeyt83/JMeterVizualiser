@@ -21,7 +21,7 @@ class DataControllerTests extends ControllerUnitTestCase {
 
         FileObject nonExistentFile = mock(FileObject)
         nonExistentFile.exists().returns(false)
-        mock(controller).getFile('gae://users/anonymous/nonsenseFile').returns(nonExistentFile)
+        mock(controller).getWorkingDirectory('gae://users/anonymous/nonsenseFile').returns(nonExistentFile)
 
         play {
             controller.averageResponseTimeOverTime()
@@ -37,7 +37,7 @@ class DataControllerTests extends ControllerUnitTestCase {
 
         FileObject validFile = mock(FileObject)
         validFile.exists().returns(true)
-        mock(controller).getFile('gae://users/anonymous/validFile').returns(validFile)
+        mock(controller).getWorkingDirectory('gae://users/anonymous/validFile').returns(validFile)
 
         DataService dataService = mock(DataService)
         TimeSeriesDataSeries series = mock(TimeSeriesDataSeries)
@@ -58,6 +58,6 @@ class DataControllerTests extends ControllerUnitTestCase {
 
         controller.beforeInterceptor()
 
-        assertEquals('hello', controller.resultsFile)
+        assertEquals('hello', controller.resultsFileName)
     }
 }

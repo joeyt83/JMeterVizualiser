@@ -10,14 +10,14 @@
 <h1>Current List of Files</h1>
 
 <g:each in="${files}" var="file">
-        <p>${file}</p>
+        <p>${file} : <g:link controller="visualisation" params="${['resultsfile': file]}">visualise this</g:link></p>
     </g:each>
 	<h1>Upload your JMeter results file here</h1>
 	<h2>In the file input</h2>
 
 
 
-	<uploader:uploader id="ajaxUploader">
+	<uploader:uploader url="create" id="ajaxUploader">
 		
 	</uploader:uploader>
 

@@ -6,7 +6,7 @@ class VisualisationController {
 
      def index = {
 		setResultsFileCookie(params.resultsfile)
-		render(text: "choose a visualisation")
+        render(view: 'choosevisualisation')
 	 }
 
 	def timeseries = {
@@ -15,6 +15,7 @@ class VisualisationController {
 
     private void setResultsFileCookie(String resultsFile) {
         def cookie = new Cookie('resultsfile', resultsFile)
+        cookie.setPath('/')
         response.addCookie(cookie)
     }
 }

@@ -10,9 +10,9 @@ class BootStrap {
 		GaeVFS.setRootPath( rootPath );
 
 		FileSystemManager fsManager = GaeVFS.getManager();
-		FileObject anonymousUsersDir = fsManager.resolveFile( "gae://users/anonymous" );
-		if ( !anonymousUsersDir.exists() ) {
-			anonymousUsersDir.createFolder();
+		FileObject sessionsDirectory = fsManager.resolveFile( "gae://sessions" );
+		if ( !sessionsDirectory.exists() ) {
+			sessionsDirectory.createFolder();
 		}
     }
 

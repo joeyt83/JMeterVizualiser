@@ -6,19 +6,20 @@ import jmetervizualiser.visualisation.TimeSeriesDataSeries
 
 class DataController extends GAEVfsAwareController {
 
-    String resultsFile
+    String resultsFileName
 
 	DataService dataService = new DataService()
 
     static defaultAction = "averageResponseTimeOverTime"
 
     def beforeInterceptor = {
-        resultsFile = request.resultsFile
+        resultsFileName = request.resultsFileName
     }
 
 	def averageResponseTimeOverTime = {
 
-        FileObject resultsFile = getFile("gae://users/anonymous/${resultsFile}")
+        FileObject workingDirectory = getWorkingDirectory()
+        FileObject resultsFile = workingDirectory.resolveFile(resultsFileName)
         if(!resultsFile.exists()) {
 			return render(text: "File doesn't exist")
 		}

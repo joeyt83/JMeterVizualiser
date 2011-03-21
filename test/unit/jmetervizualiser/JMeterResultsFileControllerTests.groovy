@@ -11,7 +11,7 @@ class JMeterResultsFileControllerTests extends ControllerUnitTestCase {
         super.tearDown()
     }
 
-    void testSomething() {
+    void testDeleteAllDeletesAllFilesInSessionsFileSystem() {
 
     }
 }
