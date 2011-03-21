@@ -3,7 +3,7 @@ package jmetervizualiser
 import org.apache.commons.vfs.FileObject
 import grails.converters.JSON
 
-class JMeterResultsFileController extends GAEVfsAwareController {
+class FileController extends GAEVfsAwareController {
 
     def index = {
 

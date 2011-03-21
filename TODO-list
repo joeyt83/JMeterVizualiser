@@ -1,5 +1,6 @@
 Define flows and journeys on site
  - Make screens look nice
+ - Get a navigation structure
 Extend graphs to give different metrics
  - split by thread group / sample name
  - throughput figures
@@ -7,11 +8,14 @@ Extend graphs to give different metrics
 
 Get lots of different results files to play with
  - Max filesize
+ - Show metadata about files
 
 Fix app engine deployment problem
+
 Add signin for site - user managed files
  - grails session management
+ - user service on GAE
 
 ******* Last action *******
-
+Need to integrate google userService so that i can save results files against users
 ***************************

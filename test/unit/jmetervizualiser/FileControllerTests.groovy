@@ -2,7 +2,7 @@ package jmetervizualiser
 
 import grails.test.*
 
-class JMeterResultsFileControllerTests extends ControllerUnitTestCase {
+class FileControllerTests extends ControllerUnitTestCase {
     protected void setUp() {
         super.setUp()
     }

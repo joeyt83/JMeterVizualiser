@@ -17,11 +17,16 @@ class DataControllerTests extends ControllerUnitTestCase {
 
     void test__AverageResponseTimeOverTime__ForNonExistentFile() {
 
-        controller.resultsFile = 'nonsenseFile'
+        controller.resultsFileName = 'nonsenseFile'
+
+        FileObject workingDirectory = mock(FileObject)
 
         FileObject nonExistentFile = mock(FileObject)
+        workingDirectory.resolveFile('nonsenseFile').returns(nonExistentFile)
+
         nonExistentFile.exists().returns(false)
-        mock(controller).getWorkingDirectory('gae://users/anonymous/nonsenseFile').returns(nonExistentFile)
+
+        mock(controller).getWorkingDirectory().returns(workingDirectory)
 
         play {
             controller.averageResponseTimeOverTime()
@@ -33,11 +38,16 @@ class DataControllerTests extends ControllerUnitTestCase {
 
     void test__AverageResponseTimeOverTime__ForFileWhichExists() {
 
-        controller.resultsFile = 'validFile'
+        controller.resultsFileName = 'validFile'
+
+        FileObject workingDirectory = mock(FileObject)
 
         FileObject validFile = mock(FileObject)
+        workingDirectory.resolveFile('validFile').returns(validFile)
+
         validFile.exists().returns(true)
-        mock(controller).getWorkingDirectory('gae://users/anonymous/validFile').returns(validFile)
+        
+        mock(controller).getWorkingDirectory().returns(workingDirectory)
 
         DataService dataService = mock(DataService)
         TimeSeriesDataSeries series = mock(TimeSeriesDataSeries)
@@ -54,7 +64,7 @@ class DataControllerTests extends ControllerUnitTestCase {
     }
 
     void test__BeforeInterceptor__AddsResultsFileToController() {
-        controller.request.resultsFile = 'hello'
+        controller.request.resultsFileName = 'hello'
 
         controller.beforeInterceptor()
 

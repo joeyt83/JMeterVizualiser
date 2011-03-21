@@ -21,7 +21,7 @@
 		
 	</uploader:uploader>
 
-<g:link controller="JMeterResultsFile" action="delete">
+<g:link controller="file" action="delete">
     Reset the files list
 </g:link>
 	

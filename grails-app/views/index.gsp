@@ -4,6 +4,6 @@
   <head><title>Welcome to Jmeter Vizualiser</title></head>
   <body>
     <h1>Get Started by adding a file for analysis</h1>
-  <g:link controller="JMeterResultsFile" action="show">Add a file</g:link>
+  <g:link controller="file" action="show">Add a file</g:link>
   </body>
 </html>
