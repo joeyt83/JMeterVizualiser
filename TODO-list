@@ -1,0 +1,10 @@
+Define flows and journeys on site
+ - Make screens look nice
+Extend graphs to give different metrics
+ - split by thread group / sample name
+ - throughput figures
+
+Get lots of different results files to play with
+
+Fix app engine deployment problem
+Add signin for site - user managed files
