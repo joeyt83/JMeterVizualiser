@@ -17,5 +17,5 @@ Add signin for site - user managed files
  - user service on GAE
 
 ******* Last action *******
-Need to integrate google userService so that i can save results files against users
+Work out how to upload large files - gzipping?
 ***************************
