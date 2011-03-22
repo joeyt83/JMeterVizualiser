@@ -26,4 +26,9 @@ class GAEVfsAwareController {
         fsManager = GaeVFS.getManager()
         return fsManager.resolveFile(path);
     }
+
+    public FileObject getFileByPath(String path) {
+        fsManager = GaeVFS.getManager()
+        return fsManager.resolveFile(path);
+    }
 }
